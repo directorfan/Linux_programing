@@ -24,9 +24,18 @@ int main() {
 
 	lfd = Socket(AF_INET,SOCK_STREAM,0);
 
+	int opt = 1;
+	setsockopt(lfd,SOL_SOCKET,SO_REUSEADDR,(void *)&opt,sizeof(opt));
+
 	Bind(lfd,(struct sockaddr*)&srv_addr,sizeof(srv_addr));
 
 	Listen(lfd,128);
+
+	sigset_t set;
+	sigemptyset(&set);
+	sigaddset(&set,SIGCHLD);
+
+	sigprocmask(SIG_BLOCK,&set,NULL);
 
 	while (1) {
 		cfd  = Accept(lfd,(struct sockaddr*)&clt_addr,&clt_addr_len);
@@ -44,6 +53,9 @@ int main() {
 			act.sa_flags = 0;
 
 			sigaction(SIGCHLD,&act,NULL);
+			
+			sigprocmask(SIG_UNBLOCK,&set,NULL);
+
 			close(cfd);
 		}
 	}
