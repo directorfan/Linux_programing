@@ -59,7 +59,6 @@ int main() {
 					close(i);
 					FD_CLR(i,&allset);
 				} else {
-
 					for (int j = 0; j < ret; ++j) {
 						buf[j] = toupper(buf[j]);
 					}

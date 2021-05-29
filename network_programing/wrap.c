@@ -55,8 +55,6 @@ again:;
 	if (n == -1) {
 		if (errno == EINTR || errno == EAGAIN)
 			goto again;
-		else
-			sys_err("read error\n");
 	}
 	return n;
 }
