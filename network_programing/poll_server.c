@@ -46,12 +46,13 @@ int main () {
 				if (client[i].fd == -1) {
 					client[i].fd = cfd;
 					client[i].events = POLLIN;
-					if (maxi < i)
+					if (maxi < i) {
 						maxi = i;
+					}
 					break;
 				}
 			}
-
+			
 			if (i == OPEN_MAX)
 				sys_err("connect too much\n");
 			if (--nready == 0)
@@ -79,9 +80,9 @@ int main () {
 						Write(client[i].fd,buf,ret);
 						Write(STDOUT_FILENO,buf,ret);
 					}
-				}
 				if (--nready == 0)
 					break;
+				}
 			}
 		}
 	}
